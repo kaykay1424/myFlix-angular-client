@@ -118,14 +118,14 @@ export class FetchApiDataService {
     }
     
     // Make the api call to register user
-    public userRegistration(userInfo: object): Observable<any> {
+    public registerUser(userInfo: object): Observable<any> {
         return this.http.post(apiUrl + 'users', userInfo).pipe(
         catchError(this.handleError)
         );
     }
 
     // Make the api call to login user
-    public userLogin(userInfo: object): Observable<any> {
+    public loginUser(userInfo: object): Observable<any> {
         return this.http.post(apiUrl + 'login', userInfo, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,
