@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
+import { MovieCardComponent } from './movie-card/movie-card.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +12,11 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class AppComponent {
-  constructor(public dialog: MatDialog) { }
-    // Open dialog when the signup button is clicked  
-    openUserRegistrationDialog(): void {
-        this.dialog.open(UserRegistrationFormComponent, {
-            width: '280px'
-        });
+    constructor(public router: Router) {}
+    onRouterOutletActivate(event: any): void {
+        if (!localStorage.getItem('userId') && this.router.url !== '') {
+            this.router.navigate(['welcome']);
+        }
     }
-    // Open dialog when the login button is clicked  
-    openUserLoginDialog(): void {
-        this.dialog.open(UserLoginFormComponent, {
-            width: '280px'
-        });
-    }
+    
 }

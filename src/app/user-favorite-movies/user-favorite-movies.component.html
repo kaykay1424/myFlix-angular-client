@@ -1,0 +1,8 @@
+<h4>My Favorite Movies</h4>
+<p *ngIf="userFavoriteMovies.length === 0">Add some <a routerLink="/movies">movies</a>!</p>
+<ul *ngFor="let movie of userFavoriteMovies;">
+    <li>
+        <span>{{movie.name}}</span>
+        <mat-icon (click)="deleteUserFavoriteMovie(movie._id)">delete</mat-icon>
+    </li>
+</ul>

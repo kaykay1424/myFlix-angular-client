@@ -1,0 +1,15 @@
+<div className="main-content">
+    <h1>{{selectedDirector.name}}</h1>
+    <p className="label">Bio</p>
+    <p 
+        className="description"
+    >
+        {{selectedDirector.bio}}
+    </p>
+    <p>
+        Born: {{selectedDirector.birthYear}}
+    </p>
+    <p *ngIf="selectedDirector.deathYear">
+        Died: {{selectedDirector.deathYear}}
+    </p>
+</div> 
