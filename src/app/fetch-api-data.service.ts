@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/internal/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, from, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const apiUrl = 'https://my-flix-2021.herokuapp.com/';
@@ -15,24 +15,32 @@ export class FetchApiDataService {
     constructor(private http: HttpClient) {
     }
 
-    movies: object[] = [];
+    movies: any[] = [];
     user: any = null;
+
     // Make the api call to get all movies
-    getAllMovies(): Observable<any> {
-        // if (this.movies.length > 0) {
-        //     console.log('movies set')
-        //     const movies = of(this.movies);
-        //     const getMovies = map((movie: object) => {
-        //         return movie;
-        //     });
-        //     return getMovies(movies);
-        // }
+    fetchAllMovies(): Observable<any> {
+        if (this.movies.length > 0) {
+            const movies = from(this.movies);
+            const getMovies = map((movie: object) => {
+                return movie;
+            });
+            return getMovies(movies);
+        }
         return this.http.get(apiUrl + 'movies', {headers: new HttpHeaders(
             {
                 Authorization: 'Bearer ' + token,
             })}).pipe(
-                map((result) => {
-                    this.movies.push(result);
+                map((result: any) => {
+                    // Only add movie if movie hasn't already been added to movies array
+                    if (!this.movies.find((movie: any) => {
+                        return movie._id === result._id;
+                    })) {
+                        const prevMovies = this.movies.slice();
+                        prevMovies.push(result);
+                        this.movies.push(result);
+                    }
+                
                     return result || {}
                 }),
             catchError(this.handleError)
@@ -40,7 +48,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get a single movie
-    getMovie(name: string): Observable<any> {
+    fetchMovie(name: string): Observable<any> {
         return this.http.get(apiUrl + name, {headers: new HttpHeaders(
             {
                 Authorization: 'Bearer ' + token,
@@ -50,7 +58,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get a single director
-    getDirector(name: string): Observable<any> {
+    fetchDirector(name: string): Observable<any> {
         return this.http.get(apiUrl + 'directors/' + name, {headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -60,7 +68,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get a single genre
-    getGenre(genre: string): Observable<any> {
+    fetchGenre(genre: string): Observable<any> {
         return this.http.get(apiUrl + 'genres/' + genre, {headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -70,7 +78,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to delete user
-    public deleteUser(id: any): Observable<any> {
+    deleteUser(id: any): Observable<any> {
         return this.http.delete(apiUrl + 'users/' + id, {
             responseType: 'text',
             headers: new HttpHeaders(
@@ -82,7 +90,7 @@ export class FetchApiDataService {
     }
 
      // Make the api call to delete movie from user's favorite movies list
-     public deleteUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
+    deleteUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
         return this.http.delete(apiUrl + 'users/' + id +'/favorite-movies/' + movie_id, {
             body: {id, movie_id}, 
             responseType: 'text',
@@ -95,7 +103,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to edit user's info
-    public editUser(user: any, id: any): Observable<any> {
+    editUser(user: any, id: any): Observable<any> {
         return this.http.patch(apiUrl + 'users/' + id, user, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,
@@ -105,15 +113,14 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get user's info
-    public getUser(id: any): Observable<any> {
-        // if (this.user) {
-            
-        //     const user = of(this.user);
-        //     const getUser = map((user: object) => {
-        //         return user;
-        //     });
-        //     return getUser(user);
-        // }
+    fetchUser(id: any): Observable<any> {
+        if (this.user) {
+            const user = of(this.user);
+            const getUser = map((user: object) => {
+                return user;
+            });
+            return getUser(user);
+        }
         return this.http.get(apiUrl + 'users/' + id, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,
@@ -127,7 +134,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to add a movie to user's favorite movies list
-    public addUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
+    addUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
         // if (this.user && this.user.favoriteMovies.includes(movie_id)) {
         //     const user = of(this.user);
         //     const getUser = map((user: object) => {
@@ -151,7 +158,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get list of user's favorite movies
-    public getUserFavoriteMovies(userId: any): Observable<any> {
+    getUserFavoriteMovies(userId: any): Observable<any> {
         return this.http.get(apiUrl + 'users/'+ userId + '/favorite-movies', {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,
@@ -161,14 +168,14 @@ export class FetchApiDataService {
     }
     
     // Make the api call to register user
-    public registerUser(userInfo: object): Observable<any> {
+    registerUser(userInfo: object): Observable<any> {
         return this.http.post(apiUrl + 'users', userInfo).pipe(
         catchError(this.handleError)
         );
     }
 
     // Make the api call to login user
-    public loginUser(userInfo: object): Observable<any> {
+    loginUser(userInfo: object): Observable<any> {
         return this.http.post(apiUrl + 'login', userInfo, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,

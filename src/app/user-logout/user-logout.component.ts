@@ -18,6 +18,7 @@ export class UserLogoutComponent implements OnInit {
 
   logoutUser(): void {
     localStorage.removeItem('userId');
+    localStorage.removeItem('username');
     localStorage.removeItem('token');
     this.router.navigate(['']);
   }

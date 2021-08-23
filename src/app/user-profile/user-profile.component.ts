@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.fetchApiData.getUser(id).subscribe(({username, email, birthday}) => {
+        this.fetchApiData.fetchUser(id).subscribe(({username, email, birthday}) => {
             this.userData["username"] = username;
             this.userData["email"] = email;
             this.userData["birthday"] = birthday;

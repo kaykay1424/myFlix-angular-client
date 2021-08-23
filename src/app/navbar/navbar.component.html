@@ -1,7 +1,18 @@
 <nav>
-    <ul>
-        <li><a routerLink="/movies">Movies</a></li>
-        <li><a routerLink="/profile">Profile</a></li>
-        <li><a routerLink="/logout">Logout</a></li>
+    <ul *ngIf="username" class="myFlix-links-nav-list">
+        <li [ngClass]="{'active': currentRoute  === '/movies'}"><a routerLink="/movies">Movies</a></li>
+    </ul>
+    <ul class="logo-nav-list">
+        <li class="logo">myFlix</li>
+    </ul>
+    <ul *ngIf="username" class="user-nav-list">
+        <li>{{username}} <span (click)="toggleDropdownMenu()">{{!open ? '&#9660;' : '&#9650;'}}</span>
+            <ul *ngIf="open">
+                <li><a routerLink="/profile">Profile</a></li>
+                <li><a routerLink="/logout">Logout</a></li>
+            </ul>
+        </li>
+        
+        
     </ul>
 </nav>

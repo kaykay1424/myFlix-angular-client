@@ -33,9 +33,16 @@ export class MovieCardComponent {
     }
 
     getMovies(): void {
-        this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-            this.movies = resp;
-        });
+        // const movies = this.fetchApiData.getAllMovies();
+
+        // if (movies.length === 0) {
+            this.fetchApiData.fetchAllMovies().subscribe((resp: any) => {
+                console.log(resp)
+                this.movies = resp;
+            });
+        // } else {
+        //     this.movies = movies[0];
+        // }
     }
 
     // Open dialog when the genre button is clicked  

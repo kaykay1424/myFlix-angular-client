@@ -1,2 +1,4 @@
-<app-navbar></app-navbar>
-<router-outlet (activate)="onRouterOutletActivate($event)"></router-outlet>
+
+<router-outlet (activate)="onRouterOutletActivate($event)">
+    <app-navbar [currentRoute]="route"></app-navbar>
+</router-outlet>
