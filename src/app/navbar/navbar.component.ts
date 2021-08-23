@@ -24,8 +24,7 @@ export class NavbarComponent implements OnInit, OnChanges {
   }
 
  ngOnChanges(changes: SimpleChanges) {
-     this.currentRoute = changes.currentRoute.currentValue;
-        console.log(changes.currentRoute.currentValue);
+        this.currentRoute = changes.currentRoute.currentValue;
   }
 
   getUser(): void {

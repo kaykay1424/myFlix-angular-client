@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar'; // displays notifications to user
 import { Router } from '@angular/router';
+import { HelperService } from '../helper.service';
 
 const id = localStorage.getItem('userId');
 
@@ -16,7 +17,8 @@ export class UserProfileComponent implements OnInit {
     constructor(
         public fetchApiData: FetchApiDataService,
         public snackBar: MatSnackBar,
-        public router: Router
+        public router: Router,
+        public helper: HelperService
     ) { }
 
     @Input() userData = {
@@ -25,6 +27,10 @@ export class UserProfileComponent implements OnInit {
         email: '',
         birthday: ''
     }
+
+    usernameLengthError: boolean = false;
+    usernameTypeError: boolean = false;
+    isFormValid:boolean = true;
 
     ngOnInit(): void {
         this.fetchApiData.fetchUser(id).subscribe(({username, email, birthday}) => {
@@ -52,6 +58,7 @@ export class UserProfileComponent implements OnInit {
     } 
 
     editUser(): void {
+        if (!this.isFormValid) return;
         this.fetchApiData.editUser(this.userData, localStorage.getItem('userId')).subscribe(() => {
             this.snackBar.open('Your profile has been updated! If you changed your password, you will have to login again.', 'OK', {
                 duration: 4000
@@ -65,4 +72,16 @@ export class UserProfileComponent implements OnInit {
             });
         });
     } 
+
+    validateForm() {
+        const formErrors = this.helper.validateForm(this.userData.username);
+        if (formErrors) {
+            formErrors.usernameErrors.length ? this.usernameLengthError = true: this.usernameLengthError = false; 
+            formErrors.usernameErrors.type ? this.usernameTypeError = true: this.usernameTypeError = false;
+            this.isFormValid = false;
+        } else {
+            this.usernameLengthError = false;
+            this.usernameTypeError = false;
+        }
+    }
 }

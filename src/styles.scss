@@ -35,5 +35,24 @@ $myFlix-Angular-client-theme: mat.define-light-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import './_partials/variables';
+
+html, body { height: 100vh; overflow-y: hidden; }
+body { 
+    background-color: $secondary-color;
+    margin: 0; 
+    max-height: 100vh;
+    overflow-y: auto;
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+.delete {
+    color: $delete-color;
+}
+.error:not(input) {
+    background-color: lighten($error-color, 30%);
+    color: $error-color;
+    padding: 0.5rem;
+}
+input.error {
+    border-color: $error-color;
+}

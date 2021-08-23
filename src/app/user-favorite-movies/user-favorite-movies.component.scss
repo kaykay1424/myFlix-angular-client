@@ -1,0 +1,33 @@
+@import '../../_partials/variables';
+.mat-card {
+    box-shadow: $card-box-shadow;
+}
+.mat-list {
+    
+    .mat-list-item {
+        & * {
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        div {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            .star {
+                width: 40%;
+            }
+            span {
+                // width: 60%;
+            }
+        }
+        .mat-icon.delete, .star {
+            text-align: right;
+            width: 20%;
+        }
+        .star {
+            color: gold
+        }
+    }
+}

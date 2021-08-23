@@ -19,6 +19,9 @@ export class AppComponent {
         if (!localStorage.getItem('userId') && this.router.url !== '') {
             this.router.navigate(['welcome']);
         }
+        if (localStorage.getItem('userId') && this.route === '/welcome') {
+            this.router.navigate(['movies']);
+        }
     }
     
 }

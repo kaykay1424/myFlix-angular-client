@@ -1,8 +1,16 @@
-<h4>My Favorite Movies</h4>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>My Favorite Movies</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
 <p *ngIf="userFavoriteMovies.length === 0">Add some <a routerLink="/movies">movies</a>!</p>
-<ul *ngFor="let movie of userFavoriteMovies;">
-    <li>
-        <span>{{movie.name}}</span>
-        <mat-icon (click)="deleteUserFavoriteMovie(movie._id)">delete</mat-icon>
-    </li>
-</ul>
+<mat-list *ngFor="let movie of userFavoriteMovies;">
+    <mat-list-item>
+        <div>
+            <mat-icon class="star">stars</mat-icon> <span> {{movie.name}}</span>
+        </div>
+        <mat-icon class="delete" (click)="deleteUserFavoriteMovie(movie._id)">delete</mat-icon>
+    </mat-list-item>
+</mat-list>
+</mat-card-content>
+</mat-card>

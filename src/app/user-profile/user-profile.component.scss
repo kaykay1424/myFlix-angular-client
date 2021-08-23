@@ -1,0 +1,54 @@
+@import '../../_partials/variables';
+.user-profile-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    max-height: 95%;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+    .mat-card {
+        box-shadow: $card-box-shadow;
+    }
+    .user-favorite-movies-container {
+        // box-shadow: 1px 1px 8px;
+        width: 250px;
+        .mat-list-item-content {
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+    .user-profile {
+        // box-shadow: 1px 1px 8px;
+        margin-right: 5%;
+        max-width: 100%;
+        text-align: center;
+        width: 300px;
+        form {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            input.error + span {
+                
+            }
+        }
+        .delete {
+            background-color: $delete-color;
+        }
+        .mat-card-header {
+            justify-content: center;
+        }
+    }
+}
+@media screen and (max-width: 600px) {
+    div.user-profile-container {
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        .user-profile.mat-card  {
+            margin-right: 0;
+        }
+        .user-favorite-movies-container {
+            margin-top: 1rem;
+        }
+    }
+}

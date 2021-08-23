@@ -1,67 +1,72 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>My Profile</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <form>
-            <mat-form-field>
-                <input
-                    matInput
-                    [(ngModel)]="userData.username"
-                    placeholder="Username"
-                    type="text"
-                    name="Username"
-                    required
-                >
-            </mat-form-field>
-            <mat-form-field>
-                <input
-                    matInput
-                    [(ngModel)]="userData.password"
-                    type = "password"
-                    placeholder="Password"
-                    name="Password"
-                    required
-                >
-            </mat-form-field>
-            <mat-form-field>
-                <input
-                    matInput
-                    [(ngModel)]="userData.email"
-                    type = "email"
-                    placeholder="Email"
-                    name="Email"
-                    required
-                >
-            </mat-form-field>
-            <mat-form-field>
-                <input
-                    matInput
-                    [(ngModel)]="userData.birthday"
-                    type = "date"
-                    placeholder="Birthday"  
-                    name="Birthday"
-                >
-            </mat-form-field>
-        </form>
-    </mat-card-content>
-    <mat-card-actions>
-        <button
-            mat-raised-button
-            (click)="editUser()"
-            color="primary"
-        >
-            Update Profile
-        </button>
-        <button
-            mat-raised-button
-            (click)="deleteUser()"
-            color="primary"
-        >
-            Delete Profile
-        </button>
-    </mat-card-actions>
-</mat-card>
-<mat-card>
-    <app-user-favorite-movies></app-user-favorite-movies>
-</mat-card>
+<div class="user-profile-container">
+    <mat-card class="user-profile">
+        <mat-card-header>
+            <mat-card-title>My Profile</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form>
+                <mat-form-field>
+                    <input
+                        [ngClass]="{error: usernameLengthError || usernameTypeError}"
+                        matInput
+                        [(ngModel)]="userData.username"
+                        (change)="validateForm()"
+                        placeholder="Username"
+                        type="text"
+                        name="Username"
+                        required
+                    >
+                </mat-form-field>
+                <mat-form-field>
+                    <input
+                        matInput
+                        [(ngModel)]="userData.password"
+                        type = "password"
+                        placeholder="Password"
+                        name="Password"
+                        required
+                    >
+                </mat-form-field>
+                <mat-form-field>
+                    <input
+                        matInput
+                        [(ngModel)]="userData.email"
+                        type = "email"
+                        placeholder="Email"
+                        name="Email"
+                        required
+                    >
+                </mat-form-field>
+                <mat-form-field>
+                    <input
+                        matInput
+                        [(ngModel)]="userData.birthday"
+                        type = "date"
+                        placeholder="Birthday"  
+                        name="Birthday"
+                    >
+                </mat-form-field>
+                <p *ngIf="usernameLengthError" class="error">Username must be at least 6 characters.</p> 
+                <p *ngIf="usernameTypeError" class="error">Username must containt only alphanumeric characters.</p>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button
+                mat-raised-button
+                (click)="editUser()"
+                color="primary"
+            >
+            <mat-icon>edit</mat-icon> Update Profile
+            </button>
+            <button
+                class="delete"
+                mat-raised-button
+                (click)="deleteUser()"
+                color="primary"
+            >
+            <mat-icon>delete</mat-icon>Delete Profile
+            </button>
+        </mat-card-actions>
+    </mat-card>
+    <app-user-favorite-movies class="user-favorite-movies-container"></app-user-favorite-movies>
+</div>
