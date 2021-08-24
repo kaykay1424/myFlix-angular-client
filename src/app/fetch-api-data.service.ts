@@ -19,7 +19,7 @@ export class FetchApiDataService {
     user: any = null;
 
     // Make the api call to get all movies
-    fetchAllMovies(): Observable<any> {
+    getAllMovies(): Observable<any> {
         if (this.movies.length > 0) {
             const movies = from(this.movies);
             const getMovies = map((movie: object) => {
@@ -48,7 +48,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get a single movie
-    fetchMovie(name: string): Observable<any> {
+    getMovie(name: string): Observable<any> {
         return this.http.get(apiUrl + name, {headers: new HttpHeaders(
             {
                 Authorization: 'Bearer ' + token,
@@ -58,7 +58,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get a single director
-    fetchDirector(name: string): Observable<any> {
+    getDirector(name: string): Observable<any> {
         return this.http.get(apiUrl + 'directors/' + name, {headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -68,7 +68,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get a single genre
-    fetchGenre(genre: string): Observable<any> {
+    getGenre(genre: string): Observable<any> {
         return this.http.get(apiUrl + 'genres/' + genre, {headers: new HttpHeaders(
           {
             Authorization: 'Bearer ' + token,
@@ -121,14 +121,17 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get user's info
-    fetchUser(id: any): Observable<any> {
+    getUser(id?: any): Observable<any> {
         if (this.user) {
             const user = of(this.user);
             const getUser = map((user: object) => {
                 return user;
             });
             return getUser(user);
-        }
+        } 
+        
+        if (!id) id = localStorage.getItem('userId');
+        
         return this.http.get(apiUrl + 'users/' + id, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,
@@ -181,6 +184,11 @@ export class FetchApiDataService {
             {
               Authorization: 'Bearer ' + token,
             })}).pipe(
+                map((result: any) => {
+ 
+                        this.user = result.user;
+                    return result || {}
+                }),
         catchError(this.handleError)
         );
     }

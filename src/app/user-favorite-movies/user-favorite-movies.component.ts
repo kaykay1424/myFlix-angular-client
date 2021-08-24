@@ -30,14 +30,14 @@ export class UserFavoriteMoviesComponent implements OnInit {
   }
 
   getUser() {
-    this.fetchApiData.fetchUser(userId).subscribe((result: any) => {
+    this.fetchApiData.getUser(userId).subscribe((result: any) => {
         this.user = result;
         this.getUserFavoriteMovies();
     });
   }
 
   getUserFavoriteMovies(): void {
-    this.fetchApiData.fetchAllMovies().subscribe((movies) => {
+    this.fetchApiData.getAllMovies().subscribe((movies) => {
         this.userFavoriteMovies = movies.filter((movie: any) => {
             return this.user.favoriteMovies.includes(movie._id);
         })

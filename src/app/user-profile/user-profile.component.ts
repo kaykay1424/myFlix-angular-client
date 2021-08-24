@@ -33,7 +33,7 @@ export class UserProfileComponent implements OnInit {
     isFormValid:boolean = true;
 
     ngOnInit(): void {
-        this.fetchApiData.fetchUser(id).subscribe(({username, email, birthday}) => {
+        this.fetchApiData.getUser(id).subscribe(({username, email, birthday}) => {
             this.userData["username"] = username;
             this.userData["email"] = email;
             this.userData["birthday"] = birthday;

@@ -11,9 +11,10 @@
             border: 1px solid $primary-color;
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
+            box-sizing: border-box;
             height: 30px;
             margin: 0;
-            padding: 8px;
+            padding-left: 8px;
         }
         .search-icon-container {
             align-items: center;

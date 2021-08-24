@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog'; // closes dialog on suc
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar'; // displays notifications to user
 import { Router } from '@angular/router';
+import { HelperService } from '../helper.service';
 
 @Component({
   selector: 'app-user-login-form',
@@ -20,9 +21,14 @@ export class UserLoginFormComponent implements OnInit {
         public fetchApiData: FetchApiDataService,
         public dialogRef: MatDialogRef<UserLoginFormComponent>,
         public snackBar: MatSnackBar,
-        private router: Router) { }
+        private router: Router,
+        public helper: HelperService) { }
 
     ngOnInit(): void {}
+
+    usernameLengthError: boolean = false;
+    usernameTypeError: boolean = false;
+    isFormValid:boolean = true;
 
     loginUser(): void {
         
@@ -42,5 +48,17 @@ export class UserLoginFormComponent implements OnInit {
                 duration: 4000
             });
         });
+    }
+
+    validateForm() {
+        const formErrors = this.helper.validateForm(this.userData.username);
+        if (formErrors) {
+            formErrors.usernameErrors.length ? this.usernameLengthError = true: this.usernameLengthError = false; 
+            formErrors.usernameErrors.type ? this.usernameTypeError = true: this.usernameTypeError = false;
+            this.isFormValid = false;
+        } else {
+            this.usernameLengthError = false;
+            this.usernameTypeError = false;
+        }
     }
 }

@@ -8,6 +8,7 @@ import { UserFavoriteMoviesComponent } from '../user-favorite-movies/user-favori
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 
 const userId = localStorage.getItem('userId');
+
 @Component({
   selector: 'app-movie-card',
   templateUrl: './movie-card.component.html',
@@ -44,15 +45,14 @@ export class MovieCardComponent {
     }
 
     getMovies(): void {
-        this.fetchApiData.fetchAllMovies().subscribe((resp: any) => {
-            console.log(resp)
+        this.fetchApiData.getAllMovies().subscribe((resp: any) => {
             this.allMovies = resp;
             this.movies = resp;
         });
     }
 
     getUserFavoriteMovies(): void {
-        this.fetchApiData.fetchUser(userId).subscribe((user) => {
+        this.fetchApiData.getUser(userId || null).subscribe((user) => {
             
             this.userFavoriteMovies = user.favoriteMovies.map((id: any) => {
                 return id;

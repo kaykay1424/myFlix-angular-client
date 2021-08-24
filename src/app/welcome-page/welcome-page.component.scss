@@ -1,4 +1,14 @@
-.main-page {
-    padding-top: 1rem;
+.welcome-page {
+    display: flex;
+    justify-content: center;
+}
+.welcome-container {
+    margin-top: auto;
     text-align: center;
+    button {
+        margin-right: 1rem;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }

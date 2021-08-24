@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog'; // closes dialog on suc
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar'; // displays notifications to user
 import { Router } from '@angular/router';
+import { HelperService } from '../helper.service';
 
 @Component({
   selector: 'app-user-registration-form',
@@ -22,7 +23,12 @@ export class UserRegistrationFormComponent implements OnInit {
         public fetchApiData: FetchApiDataService,
         public dialogRef: MatDialogRef<UserRegistrationFormComponent>,
         public snackBar: MatSnackBar,
-        public router: Router) { }
+        public router: Router,
+        public helper: HelperService) { }
+
+        usernameLengthError: boolean = false;
+        usernameTypeError: boolean = false;
+        isFormValid:boolean = true;
 
     ngOnInit(): void {}
 
@@ -40,5 +46,17 @@ export class UserRegistrationFormComponent implements OnInit {
                 duration: 2000
             });
         });
+    }
+
+    validateForm() {
+        const formErrors = this.helper.validateForm(this.userData.username);
+        if (formErrors) {
+            formErrors.usernameErrors.length ? this.usernameLengthError = true: this.usernameLengthError = false; 
+            formErrors.usernameErrors.type ? this.usernameTypeError = true: this.usernameTypeError = false;
+            this.isFormValid = false;
+        } else {
+            this.usernameLengthError = false;
+            this.usernameTypeError = false;
+        }
     }
 }

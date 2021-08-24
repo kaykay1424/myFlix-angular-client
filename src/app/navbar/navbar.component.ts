@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit, OnChanges {
 
     @Input() currentRoute:any = '';
     open: boolean = false;
-    username: any = localStorage.getItem('username');
+    username: any = localStorage.getItem('username') || null;
 
   ngOnInit(): void {
       this.getUser();
@@ -29,13 +29,11 @@ export class NavbarComponent implements OnInit, OnChanges {
 
   getUser(): void {
     const userId = localStorage.getItem('userId');
-    if (!userId && !this.username) {
-        this.fetchApiData.fetchUser(userId).subscribe((resp: any) => {
+    if (userId) {
+        this.fetchApiData.getUser(userId).subscribe((resp: any) => {
             this.username = resp.username;
         });
-    } else {
-        this.username = localStorage.getItem('username');
-    }
+    } 
   }
 
   getUserDropdownMenu() {
