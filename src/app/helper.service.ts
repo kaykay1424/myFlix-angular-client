@@ -1,11 +1,34 @@
 import { Injectable } from '@angular/core';
-
+import {parse} from 'angular-html-parser';
 @Injectable({
   providedIn: 'root'
 })
 export class HelperService {
 
     constructor() { }
+
+    // Break long text into readable paragraphs
+    makeTextReadable(text: string) {
+        const textArray = text.split('');
+        textArray.unshift('<p>');
+        const indexesArray = [];
+        let numParagraphs = 0;
+
+        for (let i = 0; i < textArray.length; i++) {        
+            // Add a paragraph after every 5 sentences
+            if (textArray[i] === '.' && textArray[i+1] === ' ') {
+                numParagraphs++;
+                if (numParagraphs === 5) {
+                    indexesArray.push(i+1);
+                    numParagraphs = 0;
+                    textArray.splice(i+1, 0, '</p><p>');
+                }
+            }
+        
+        }
+   
+        return textArray.join(''); // render as html
+    };
 
     validateForm(username: string, passwords?: any) {
         let errors: any = {};

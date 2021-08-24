@@ -1,0 +1,62 @@
+@import '../../_partials/variables';
+.movies-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    .search-container {
+        display: flex;
+        margin: 1rem auto;
+        padding: 8px;
+        input.mat-input-element {
+            border: 1px solid $primary-color;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            height: 30px;
+            margin: 0;
+            padding: 8px;
+        }
+        .search-icon-container {
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid $primary-color;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            display: flex;
+            height: 30px;
+            .mat-icon {
+                color: $primary-color;
+            }
+        }
+    
+    }
+    .movies-row {
+        display: grid;
+        grid-auto-flow: column;
+        justify-items: center;
+        overflow-x: auto;
+        .movie {
+            border-right: 1px solid darkgray;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 260px;
+            .favorited {
+                cursor: pointer;
+                color: gold;
+            }
+            .mat-card-actions {
+                align-items: center;
+                display: flex;
+                flex-wrap: wrap;
+                justify-items: flex-start;
+                padding-left: 8px;
+                padding-right: 8px;
+                * {
+                    margin-left: 0;
+                    margin-right: 8px;
+                }
+            }
+        }
+        bottom: 0;
+    }
+}

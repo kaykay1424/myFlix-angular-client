@@ -41,18 +41,39 @@ html, body { height: 100vh; overflow-y: hidden; }
 body { 
     background-color: $secondary-color;
     margin: 0; 
-    max-height: 100vh;
-    overflow-y: auto;
+    // max-height: 100vh;
+    // overflow-y: auto;
     font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+* {
+    box-sizing: border-box;
 }
 .delete {
     color: $delete-color;
+}
+.cdk-overlay-pane {
+    max-height: 100vh;
+    overflow-y: auto;
 }
 .error:not(input) {
     background-color: lighten($error-color, 30%);
     color: $error-color;
     padding: 0.5rem;
 }
+.label {
+    color: rgb(116, 116, 116);
+    font-weight: bold;
+}
 input.error {
     border-color: $error-color;
 }
+.cdk-overlay-pane .mat-dialog-container {
+    padding: 0;
+}
+.cdk-overlay-pane .mat-dialog-container .dialog-box {
+    padding: 1rem;
+}
+.mat-icon {
+    cursor: pointer;
+}
+

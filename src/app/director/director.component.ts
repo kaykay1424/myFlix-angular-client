@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserInteractionsService } from '../user-interactions.service';
+import { HelperService } from '../helper.service';
 
 @Component({
   selector: 'app-director',
@@ -8,7 +9,8 @@ import { UserInteractionsService } from '../user-interactions.service';
 })
 export class DirectorComponent implements OnInit {
 
-    constructor(public userInteractions: UserInteractionsService) { }
+    constructor(public userInteractions: UserInteractionsService,
+        public helper: HelperService) { }
 
     selectedDirector = this.userInteractions.getSelectedDirector();
 

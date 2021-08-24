@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
 import { UserInteractionsService } from '../user-interactions.service';
 import { GenreComponent } from '../genre/genre.component';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserFavoriteMoviesComponent } from '../user-favorite-movies/user-favorite-movies.component';
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 
+const userId = localStorage.getItem('userId');
 @Component({
   selector: 'app-movie-card',
   templateUrl: './movie-card.component.html',
@@ -14,8 +15,13 @@ import { MovieDetailsComponent } from '../movie-details/movie-details.component'
 })
 
 export class MovieCardComponent {
+    allMovies: any[] = [];
     movies: any[] = [];
+    userFavoriteMovies: any[] = [];
     selectedGenre: string = '';
+    isMovieFavorited: any = null;
+    user: any = {};
+
     constructor(
         public fetchApiData: FetchApiDataService,
         public userInteractions: UserInteractionsService,
@@ -24,32 +30,41 @@ export class MovieCardComponent {
 
     ngOnInit(): void {
         this.getMovies();
+        this.getUserFavoriteMovies();
     }
 
     favoriteMovie(movie: any): void {
-        this.fetchApiData.addUserFavoriteMovie(localStorage.getItem('userId'), movie._id).subscribe((result) => {
+        if (this.userFavoriteMovies.includes(movie._id)) {
+            alert('You have already added this movie to your list. Try adding another one.')
+            return;
+        }
+        this.fetchApiData.addUserFavoriteMovie(userId, movie._id).subscribe((result) => {
             this.openFavoriteMoviesDialog(movie._id);
         });
     }
 
     getMovies(): void {
-        // const movies = this.fetchApiData.getAllMovies();
+        this.fetchApiData.fetchAllMovies().subscribe((resp: any) => {
+            console.log(resp)
+            this.allMovies = resp;
+            this.movies = resp;
+        });
+    }
 
-        // if (movies.length === 0) {
-            this.fetchApiData.fetchAllMovies().subscribe((resp: any) => {
-                console.log(resp)
-                this.movies = resp;
+    getUserFavoriteMovies(): void {
+        this.fetchApiData.fetchUser(userId).subscribe((user) => {
+            
+            this.userFavoriteMovies = user.favoriteMovies.map((id: any) => {
+                return id;
             });
-        // } else {
-        //     this.movies = movies[0];
-        // }
+        })
     }
 
     // Open dialog when the genre button is clicked  
     openGenreDialog(genre: object): void {
         this.userInteractions.setSelectedGenre(genre);
         this.dialog.open(GenreComponent, {
-            width: '500px'
+            // width: '500px'
         });
     }
 
@@ -57,7 +72,7 @@ export class MovieCardComponent {
     openDirectorDialog(director: object): void {
         this.userInteractions.setSelectedDirector(director);
         this.dialog.open(DirectorComponent, {
-            width: '500px'
+            // width: '500px'
         });
     }
 
@@ -65,7 +80,7 @@ export class MovieCardComponent {
     openFavoriteMoviesDialog(director: object): void {
         this.userInteractions.setSelectedDirector(director);
         this.dialog.open(UserFavoriteMoviesComponent, {
-            width: '500px'
+            // width: '500px'
         });
     }
 
@@ -73,7 +88,16 @@ export class MovieCardComponent {
      openMovieDialog(movie: object): void {
         this.userInteractions.setSelectedMovie(movie);
         this.dialog.open(MovieDetailsComponent, {
-            width: '500px'
+            // width: '500px'
         });
+    }
+
+    searchMovies(event: any): void {
+        const search = event.target.value,
+            filteredMovies = this.allMovies.filter((movie) => {
+            return movie.name.toLowerCase().match(search.toLowerCase());
+        });
+
+        this.movies = filteredMovies;
     }
 }

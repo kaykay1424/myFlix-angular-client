@@ -1,5 +1,19 @@
-<div style="display: flex;">
-    <mat-card *ngFor="let movie of movies;" style="flex: 1 1 auto;">
+<div class="movies-container">
+    <div class="search-container">
+        <div class="search-icon-container">
+            <mat-icon>search</mat-icon>
+        </div>
+        <input
+            matInput
+            placeholder="Search"
+            (keyup)="searchMovies($event)"
+            type="text"
+            name="Search"
+            required
+        >
+    </div>
+    <div class="movies-row">
+    <mat-card class="movie" *ngFor="let movie of movies;" style="/*flex: 1 1 auto;*/" >
         <mat-card-header>
         <mat-card-title>{{movie.name}}</mat-card-title>
             <mat-card-subtitle>Directed by: {{movie.director.name}}</mat-card-subtitle>
@@ -29,7 +43,9 @@
             </button>
             <mat-icon
                 (click)="favoriteMovie(movie)"
-            >favorite_border</mat-icon>
+                [ngClass]="{'favorited': userFavoriteMovies.includes(movie._id)}"
+            >stars</mat-icon>
         </mat-card-actions>
     </mat-card>
+</div>
 </div>

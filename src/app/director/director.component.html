@@ -1,10 +1,10 @@
-<div className="main-content">
+<div class="dialog-box">
     <h1>{{selectedDirector.name}}</h1>
-    <p className="label">Bio</p>
+    <p class="label">Bio:</p>
     <p 
-        className="description"
+        class="description"
+        [innerHTML]="helper.makeTextReadable(selectedDirector.bio)"
     >
-        {{selectedDirector.bio}}
     </p>
     <p>
         Born: {{selectedDirector.birthYear}}

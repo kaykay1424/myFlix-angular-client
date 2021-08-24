@@ -8,7 +8,8 @@ import { UserInteractionsService } from '../user-interactions.service';
 })
 export class GenreComponent implements OnInit {
 
-    constructor(public userInteractions: UserInteractionsService) { }
+    constructor(public userInteractions: UserInteractionsService,
+        ) { }
 
     selectedGenre = this.userInteractions.getSelectedGenre();
 

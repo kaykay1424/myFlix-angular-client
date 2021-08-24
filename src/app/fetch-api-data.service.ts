@@ -91,6 +91,7 @@ export class FetchApiDataService {
 
      // Make the api call to delete movie from user's favorite movies list
     deleteUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
+        
         return this.http.delete(apiUrl + 'users/' + id +'/favorite-movies/' + movie_id, {
             body: {id, movie_id}, 
             responseType: 'text',
@@ -98,6 +99,13 @@ export class FetchApiDataService {
             {
               Authorization: 'Bearer ' + token,
             })}).pipe(
+                map((result) => {
+                    if (this.user && this.user.favoriteMovies.includes(movie_id)) 
+                    this.user.favoriteMovies = this.user.favoriteMovies.filter((movie: any) => {
+                        return movie._id !== movie_id;
+                    });
+                    return result || {}
+                }),
         catchError(this.handleError)
         );
     }
@@ -135,13 +143,6 @@ export class FetchApiDataService {
 
     // Make the api call to add a movie to user's favorite movies list
     addUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
-        // if (this.user && this.user.favoriteMovies.includes(movie_id)) {
-        //     const user = of(this.user);
-        //     const getUser = map((user: object) => {
-        //         return;
-        //     });
-        //     return getUser(user);
-        // };
         return this.http.patch(apiUrl + 'users/'+ id + '/favorite-movies/' + movie_id, {id, movie_id}, {
             responseType: 'text',
             headers: new HttpHeaders(
@@ -149,7 +150,7 @@ export class FetchApiDataService {
               Authorization: 'Bearer ' + token
             })}).pipe(
                 map((result) => {
-                    if (this.user) 
+                    if (this.user && !this.user.favoriteMovies.includes(movie_id)) 
                         this.user.favoriteMovies = [...this.user.favoriteMovies, movie_id];
                     return result || {}
                 }),
