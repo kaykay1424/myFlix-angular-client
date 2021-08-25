@@ -42,7 +42,7 @@ body {
     background-color: $secondary-color;
     margin: 0; 
     // max-height: 100vh;
-    // overflow-y: auto;
+    overflow: hidden;
     font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 * {
@@ -76,4 +76,7 @@ input.error {
 .mat-icon {
     cursor: pointer;
 }
-
+.star, 
+.favorited {
+    color: #b89c02;
+}

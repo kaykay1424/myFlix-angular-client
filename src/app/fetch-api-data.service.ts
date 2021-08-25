@@ -27,6 +27,7 @@ export class FetchApiDataService {
             });
             return getMovies(movies);
         }
+        console.log(token)
         return this.http.get(apiUrl + 'movies', {headers: new HttpHeaders(
             {
                 Authorization: 'Bearer ' + token,
@@ -100,9 +101,11 @@ export class FetchApiDataService {
               Authorization: 'Bearer ' + token,
             })}).pipe(
                 map((result) => {
-                    if (this.user && this.user.favoriteMovies.includes(movie_id)) 
-                    this.user.favoriteMovies = this.user.favoriteMovies.filter((movie: any) => {
-                        return movie._id !== movie_id;
+                    // Remove movie from user's favorites list if it exists in user's list
+                    if (this.user && this.user.favoriteMovies.includes(movie_id))
+                     
+                    this.user.favoriteMovies = this.user.favoriteMovies.filter((movieId: any) => {
+                        return movieId !== movie_id;
                     });
                     return result || {}
                 }),
@@ -129,9 +132,7 @@ export class FetchApiDataService {
             });
             return getUser(user);
         } 
-        
-        if (!id) id = localStorage.getItem('userId');
-        
+
         return this.http.get(apiUrl + 'users/' + id, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + token,
@@ -153,6 +154,7 @@ export class FetchApiDataService {
               Authorization: 'Bearer ' + token
             })}).pipe(
                 map((result) => {
+                    // Add movie to user's favorites list if movie exists in their list
                     if (this.user && !this.user.favoriteMovies.includes(movie_id)) 
                         this.user.favoriteMovies = [...this.user.favoriteMovies, movie_id];
                     return result || {}
@@ -184,12 +186,11 @@ export class FetchApiDataService {
             {
               Authorization: 'Bearer ' + token,
             })}).pipe(
-                map((result: any) => {
- 
-                        this.user = result.user;
+                map((result: any) => { 
+                    this.user = result.user;
                     return result || {}
                 }),
-        catchError(this.handleError)
+                catchError(this.handleError)
         );
     }
 
@@ -202,7 +203,7 @@ export class FetchApiDataService {
                 `Error body is: ${error.error}`);
             }
             return throwError(
-            'Something bad happened; please try again later.');
+            error.status);
     }
 }
 

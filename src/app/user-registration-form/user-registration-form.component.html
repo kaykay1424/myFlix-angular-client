@@ -8,6 +8,7 @@
                 <input
                     matInput
                     [(ngModel)]="userData.username"
+                    (change)="validateForm()"
                     (keydown)="validateForm()"
                     placeholder="Username"
                     type="text"

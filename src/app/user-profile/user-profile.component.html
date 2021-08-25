@@ -10,6 +10,7 @@
                         [ngClass]="{error: usernameLengthError || usernameTypeError}"
                         matInput
                         [(ngModel)]="userData.username"
+                        (keydown)="validateForm()"
                         (change)="validateForm()"
                         placeholder="Username"
                         type="text"

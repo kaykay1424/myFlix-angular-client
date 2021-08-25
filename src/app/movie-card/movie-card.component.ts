@@ -6,6 +6,7 @@ import { DirectorComponent } from '../director/director.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserFavoriteMoviesComponent } from '../user-favorite-movies/user-favorite-movies.component';
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const userId = localStorage.getItem('userId');
 
@@ -18,6 +19,7 @@ const userId = localStorage.getItem('userId');
 export class MovieCardComponent {
     allMovies: any[] = [];
     movies: any[] = [];
+    movieId: any = null;
     userFavoriteMovies: any[] = [];
     selectedGenre: string = '';
     isMovieFavorited: any = null;
@@ -26,12 +28,21 @@ export class MovieCardComponent {
     constructor(
         public fetchApiData: FetchApiDataService,
         public userInteractions: UserInteractionsService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        public router: Router,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
         this.getMovies();
         this.getUserFavoriteMovies();
+        this.getPathParams();
+    }
+
+    ngOnChanges() {
+        this.getMovies();
+        this.getUserFavoriteMovies();
+        this.getPathParams();        
     }
 
     favoriteMovie(movie: any): void {
@@ -40,6 +51,7 @@ export class MovieCardComponent {
             return;
         }
         this.fetchApiData.addUserFavoriteMovie(userId, movie._id).subscribe((result) => {
+            this.userFavoriteMovies.push(movie._id);
             this.openFavoriteMoviesDialog(movie._id);
         });
     }
@@ -47,17 +59,28 @@ export class MovieCardComponent {
     getMovies(): void {
         this.fetchApiData.getAllMovies().subscribe((resp: any) => {
             this.allMovies = resp;
-            this.movies = resp;
+
+            // If url is for a single movie only return that movie
+            this.movieId 
+                ? this.movies = resp.filter((movie: any) => {
+                    return this.movieId === movie._id;
+                })
+                : this.movies = resp;
         });
     }
 
+    getPathParams() {
+        this.route.paramMap.subscribe( paramMap => {
+            this.movieId = paramMap.get('id');
+        })
+    }
+
     getUserFavoriteMovies(): void {
-        this.fetchApiData.getUser(userId || null).subscribe((user) => {
-            
+        this.fetchApiData.getUser(userId).subscribe((user) => {
             this.userFavoriteMovies = user.favoriteMovies.map((id: any) => {
                 return id;
             });
-        })
+         });
     }
 
     // Open dialog when the genre button is clicked  
@@ -81,6 +104,8 @@ export class MovieCardComponent {
         this.userInteractions.setSelectedDirector(director);
         this.dialog.open(UserFavoriteMoviesComponent, {
             // width: '500px'
+        }).afterClosed().subscribe(() => {
+            this.getUserFavoriteMovies();
         });
     }
 

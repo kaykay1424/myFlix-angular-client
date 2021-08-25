@@ -46,7 +46,7 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open('Your profile has been deleted!', 'OK', {
                     duration: 2000
                 }).afterDismissed().subscribe(() => {
-                    this.router.navigate(['welcome']);
+                    this.router.navigate(['logout']);
                 });
             }, (error) => {
                 this.snackBar.open('Your profile could not be deleted due to an error. Please try again.'
@@ -63,7 +63,7 @@ export class UserProfileComponent implements OnInit {
             this.snackBar.open('Your profile has been updated! If you changed your password, you will have to login again.', 'OK', {
                 duration: 4000
             }).afterDismissed().subscribe(() => {
-                if (this.userData.password) this.router.navigate(['welcome']);
+                if (this.userData.password) this.router.navigate(['logout']);
             });
         }, (error) => {
             this.snackBar.open('Your profile could not be updated due to an error. Please try again.'
@@ -82,6 +82,7 @@ export class UserProfileComponent implements OnInit {
         } else {
             this.usernameLengthError = false;
             this.usernameTypeError = false;
+            this.isFormValid = true;
         }
     }
 }

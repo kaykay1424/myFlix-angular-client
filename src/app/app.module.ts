@@ -32,6 +32,10 @@ const appRoutes: Routes = [
         component: UserLogoutComponent
     },
     { 
+        path: 'movies/:id', 
+        component: MovieCardComponent 
+    },
+    { 
         path: 'movies', 
         component: MovieCardComponent 
     },

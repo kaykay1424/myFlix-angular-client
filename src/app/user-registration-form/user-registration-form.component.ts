@@ -34,13 +34,14 @@ export class UserRegistrationFormComponent implements OnInit {
 
     // Send form data to API to login user
     registerUser(): void {
+        if (!this.isFormValid) return;
         this.fetchApiData.registerUser(this.userData).subscribe((result) => {   
         this.dialogRef.close(); 
             this.snackBar.open('You have successfully created a profile! Please login to use myFlix.', 'OK', {
                 duration: 4000
             }).afterDismissed().subscribe(() => {
                 this.router.navigate(['welcome']);
-            });;
+            });
         }, (error) => {
             this.snackBar.open('An error has occurred. Please try again later', 'OK', {
                 duration: 2000
@@ -57,6 +58,7 @@ export class UserRegistrationFormComponent implements OnInit {
         } else {
             this.usernameLengthError = false;
             this.usernameTypeError = false;
+            this.isFormValid = true;
         }
     }
 }

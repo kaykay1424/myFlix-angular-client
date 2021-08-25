@@ -3,24 +3,28 @@ $navbar-bg-color: rgb(75, 0, 128);
     box-sizing: border-box;
 }
 nav {
-    li.active {
-        border: 2px solid rgb(214, 194, 228);
-        border-radius: 5px;
-        a {
-        color: red;
-        color:rgb(214, 194, 228);
+    li {
+        & a:hover {
+            text-decoration: underline;
+        }
+        &.active {
+            border: 2px solid rgb(214, 194, 228);
+            border-radius: 5px;
+            a {
+                color: red;
+                color:rgb(214, 194, 228);
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
     }
     background-color: $navbar-bg-color;
     color: #fff;
     display: grid;
     display: flex;
-    // grid-template-columns: 1fr 3fr 1fr;
     width: 100%;
     ul {
-        &.myFlix-links-nav-list {
-            // width: 28%;
-        }
         &.logo-nav-list {
             justify-content: center;
             width: 100%;
@@ -32,9 +36,6 @@ nav {
             text-align: center; 
             li {
                 position: relative;
-                &:hover {
-                    text-decoration: none;
-                }
                 span {
                     cursor: pointer;
                     margin-left: 5px;
@@ -51,21 +52,14 @@ nav {
                     li {
                         margin: 0;
                     }
-                    li:hover {
-                        text-decoration: underline;
-                    }
                 }
-            }
-           
+            } 
         }
         display: flex;
         list-style: none;
         li {
             margin: 1rem;
             padding: 8px;
-            &:hover {
-                text-decoration: underline;
-            }
         }
         a {
             color: #fff;

@@ -31,7 +31,7 @@ export class UserLoginFormComponent implements OnInit {
     isFormValid:boolean = true;
 
     loginUser(): void {
-        
+        if (!this.isFormValid) return;
         this.fetchApiData.loginUser(this.userData).subscribe((result) => {
         localStorage.setItem('userId', result.user._id);
         localStorage.setItem('username', result.user.username)
@@ -40,7 +40,7 @@ export class UserLoginFormComponent implements OnInit {
         this.snackBar.open('You are now logged in!', 'OK', {
             duration: 4000
         }).afterDismissed().subscribe(() => {
-            this.router.navigate(['movies']);
+            this.router.navigate(['movies']);            
         });
         
     }, (error) => {
@@ -59,6 +59,7 @@ export class UserLoginFormComponent implements OnInit {
         } else {
             this.usernameLengthError = false;
             this.usernameTypeError = false;
+            this.isFormValid = true;
         }
     }
 }

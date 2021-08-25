@@ -1,13 +1,28 @@
 @import '../../_partials/variables';
+::ng-deep .mat-spinner circle {
+    stroke: $primary-color !important;
+}
 .movies-container {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    max-height: 90vh;
+    overflow-y: auto;
+    a {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .loading-spinner-container {
+        display: flex;
+        justify-content: center;
+        
+    }
     .search-container {
         display: flex;
         margin: 1rem auto;
         padding: 8px;
         input.mat-input-element {
+            background-color: #fff;
             border: 1px solid $primary-color;
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
@@ -43,7 +58,6 @@
             width: 260px;
             .favorited {
                 cursor: pointer;
-                color: gold;
             }
             .mat-card-actions {
                 align-items: center;
@@ -59,5 +73,11 @@
             }
         }
         bottom: 0;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .movies-container .movies-row {
+        grid-auto-flow: unset;
     }
 }

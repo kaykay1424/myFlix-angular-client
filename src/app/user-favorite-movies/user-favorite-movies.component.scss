@@ -1,13 +1,16 @@
 @import '../../_partials/variables';
 .mat-card {
     box-shadow: $card-box-shadow;
-    width: 400px;
     .mat-list {    
         .mat-list-item {
             & * {
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
+                text-align: center;
+            }
+            a {
+                text-decoration: none;
             }
             div {
                 align-items: center;
@@ -22,9 +25,8 @@
                 text-align: right;
                 width: 20%;
             }
-            .star {
-                color: gold;
-                text-align: left;;
+            .star {  
+                text-align: left;
             }
         }
     }

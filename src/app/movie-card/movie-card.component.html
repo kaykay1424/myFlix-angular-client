@@ -12,8 +12,12 @@
             required
         >
     </div>
+    <div *ngIf="movies.length === 0" class="loading-spinner-container">
+        <mat-spinner diameter="30"></mat-spinner>
+    </div>
+    <a *ngIf="movieId" routerLink="/movies">Back to all movies</a>
     <div class="movies-row">
-    <mat-card class="movie" *ngFor="let movie of movies;" style="/*flex: 1 1 auto;*/" >
+    <mat-card class="movie" *ngFor="let movie of movies;" >
         <mat-card-header>
         <mat-card-title>{{movie.name}}</mat-card-title>
             <mat-card-subtitle>Directed by: {{movie.director.name}}</mat-card-subtitle>

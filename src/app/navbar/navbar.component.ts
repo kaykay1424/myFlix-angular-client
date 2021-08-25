@@ -10,39 +10,48 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit, OnChanges {
 
-  constructor(public userInteractons: UserInteractionsService,
-    public fetchApiData: FetchApiDataService,
-    public router: Router) { }
+    constructor(public userInteractons: UserInteractionsService,
+        public fetchApiData: FetchApiDataService,
+        public router: Router) { }
 
     @Input() currentRoute:any = '';
     open: boolean = false;
     username: any = localStorage.getItem('username') || null;
 
-  ngOnInit(): void {
-      this.getUser();
-      this.getUserDropdownMenu();
-  }
+    ngOnInit(): void {
+       this.checkRoute();
+    }
 
- ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: SimpleChanges) {
         this.currentRoute = changes.currentRoute.currentValue;
-  }
+        this.userInteractons.setUserDropdownMenuOpen(false);
+        this.getUserDropdownMenu();
+        this.checkRoute();
+    }
 
-  getUser(): void {
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-        this.fetchApiData.getUser(userId).subscribe((resp: any) => {
-            this.username = resp.username;
+    checkRoute(): void {
+        // Only get user info, if user is logged in (if currentRoute is not /welcome, user is logged in)
+        if (this.currentRoute !== '/welcome') {
+            this.getUser();
+            this.getUserDropdownMenu();
+            
+        } else {
+            this.username = null;
+        }
+    }
+
+    getUser(): void {
+        this.fetchApiData.getUser(localStorage.getItem('userId') || null).subscribe((user) => {
+            this.username = user.username;
         });
-    } 
-  }
+    }
 
-  getUserDropdownMenu() {
-    this.open = this.userInteractons.getUserDropdownMenuOpen();
-  }
+    getUserDropdownMenu() {
+        this.open = this.userInteractons.getUserDropdownMenuOpen();
+    }
 
-  toggleDropdownMenu(): void {
-    this.userInteractons.setUserDropdownMenuOpen(!this.open);
-    this.getUserDropdownMenu();
-  }
-
+    toggleDropdownMenu(): void {
+        this.userInteractons.setUserDropdownMenuOpen(!this.open);
+        this.getUserDropdownMenu();
+    }
 }

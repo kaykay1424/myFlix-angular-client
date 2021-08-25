@@ -1,16 +1,18 @@
 @import '../../_partials/variables';
+::ng-deep .mat-card {
+    width: auto !important;
+}
 .user-profile-container {
     display: flex;
     justify-content: center;
     margin-top: 40px;
     max-height: 95%;
     overflow-y: auto;
-    padding-bottom: 1rem;
+    padding: 0 1rem 1rem 1rem;
     .mat-card {
         box-shadow: $card-box-shadow;
     }
     .user-favorite-movies-container {
-        // box-shadow: 1px 1px 8px;
         width: 250px;
         .mat-list-item-content {
             justify-content: space-between;
@@ -18,18 +20,14 @@
         }
     }
     .user-profile {
-        // box-shadow: 1px 1px 8px;
         margin-right: 5%;
         max-width: 100%;
         text-align: center;
-        width: 300px;
+        width: 400px;
         form {
             display: flex;
             flex-direction: column;
             margin: auto;
-            input.error + span {
-                
-            }
         }
         .delete {
             background-color: $delete-color;
@@ -44,10 +42,14 @@
         align-items: center;
         flex-direction: column;
         justify-content: center;
+        button:last-child {
+            margin-top: 1rem;
+        }
         .user-profile.mat-card  {
             margin-right: 0;
         }
         .user-favorite-movies-container {
+            margin-bottom: 1rem;
             margin-top: 1rem;
         }
     }

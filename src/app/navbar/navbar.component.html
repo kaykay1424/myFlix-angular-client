@@ -8,11 +8,9 @@
     <ul *ngIf="username" class="user-nav-list">
         <li>{{username}} <span (click)="toggleDropdownMenu()">{{!open ? '&#9660;' : '&#9650;'}}</span>
             <ul *ngIf="open">
-                <li><a routerLink="/profile">Profile</a></li>
+                <li [ngClass]="{'active': currentRoute  === '/profile'}"><a routerLink="/profile">Profile</a></li>
                 <li><a routerLink="/logout">Logout</a></li>
             </ul>
         </li>
-        
-        
     </ul>
 </nav>
