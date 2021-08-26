@@ -3,6 +3,7 @@ import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar'; // displays notifications to user
 import { Router } from '@angular/router';
 import { HelperService } from '../helper.service';
+import { DatePipe, formatDate } from '@angular/common';
 
 const id = localStorage.getItem('userId');
 
@@ -25,18 +26,19 @@ export class UserProfileComponent implements OnInit {
         username: '',
         password: '',
         email: '',
-        birthday: ''
+        birthDate: ''
     }
 
+    // Variables for form validation
     usernameLengthError: boolean = false;
     usernameTypeError: boolean = false;
     isFormValid:boolean = true;
 
     ngOnInit(): void {
-        this.fetchApiData.getUser(id).subscribe(({username, email, birthday}) => {
+        this.fetchApiData.getUser(id).subscribe(({username, email, birthDate}) => {
             this.userData["username"] = username;
             this.userData["email"] = email;
-            this.userData["birthday"] = birthday;
+            this.userData["birthDate"] = formatDate(new Date(birthDate), 'yyyy-LL-dd', 'en-US' );
         })
     }
 

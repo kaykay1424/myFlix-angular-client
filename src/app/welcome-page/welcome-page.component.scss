@@ -1,14 +1,28 @@
+@import '../../_partials/variables';
+:host {
+    display: block;
+    max-height: $main-section-desktop-height;
+    overflow-y: auto;
+}
 .welcome-page {
     display: flex;
     justify-content: center;
-}
-.welcome-container {
-    margin-top: auto;
-    text-align: center;
-    button {
-        margin-right: 1rem;
-        &:last-child {
-            margin-right: 0;
+    .welcome-container {
+        height: 72%;
+        margin-top: auto;
+        text-align: center;
+        button {
+            margin-right: 1rem;
+            &:last-child {
+                margin-right: 0;
+            }
         }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    :host {
+        margin-top: -18vh;
+        max-height: $main-section-mobile-height;
     }
 }

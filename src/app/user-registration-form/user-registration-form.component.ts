@@ -16,7 +16,7 @@ export class UserRegistrationFormComponent implements OnInit {
         username: '', 
         password: '', 
         email: '', 
-        birthdate: '' 
+        birthDate: '' 
     };
     
     constructor(
@@ -26,9 +26,10 @@ export class UserRegistrationFormComponent implements OnInit {
         public router: Router,
         public helper: HelperService) { }
 
-        usernameLengthError: boolean = false;
-        usernameTypeError: boolean = false;
-        isFormValid:boolean = true;
+    // Variables for form validation
+    usernameLengthError: boolean = false;
+    usernameTypeError: boolean = false;
+    isFormValid:boolean = true;
 
     ngOnInit(): void {}
 

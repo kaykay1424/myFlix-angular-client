@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit, OnChanges {
 
     @Input() currentRoute:any = '';
     open: boolean = false;
-    username: any = localStorage.getItem('username') || null;
+    username: any = null;
 
     ngOnInit(): void {
        this.checkRoute();
@@ -25,23 +25,21 @@ export class NavbarComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         this.currentRoute = changes.currentRoute.currentValue;
         this.userInteractons.setUserDropdownMenuOpen(false);
-        this.getUserDropdownMenu();
         this.checkRoute();
     }
 
     checkRoute(): void {
+        this.toggleDropdownMenu(true);
         // Only get user info, if user is logged in (if currentRoute is not /welcome, user is logged in)
-        if (this.currentRoute !== '/welcome') {
-            this.getUser();
-            this.getUserDropdownMenu();
-            
+        if (this.currentRoute !== '/welcome' && this.currentRoute !== '') {
+            this.getUser();            
         } else {
             this.username = null;
         }
     }
 
     getUser(): void {
-        this.fetchApiData.getUser(localStorage.getItem('userId') || null).subscribe((user) => {
+        this.fetchApiData.getUser(localStorage.getItem('userId')).subscribe((user) => {
             this.username = user.username;
         });
     }
@@ -50,8 +48,8 @@ export class NavbarComponent implements OnInit, OnChanges {
         this.open = this.userInteractons.getUserDropdownMenuOpen();
     }
 
-    toggleDropdownMenu(): void {
-        this.userInteractons.setUserDropdownMenuOpen(!this.open);
+    toggleDropdownMenu(open: boolean): void {
+        this.userInteractons.setUserDropdownMenuOpen(!open);
         this.getUserDropdownMenu();
     }
 }

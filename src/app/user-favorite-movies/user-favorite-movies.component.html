@@ -4,8 +4,8 @@
     </mat-card-header>
     <mat-card-content>
         <p *ngIf="userFavoriteMovies.length === 0">Add some <a routerLink="/movies">movies</a>!</p>
-        <mat-list *ngFor="let movie of userFavoriteMovies;">
-            <mat-list-item>
+        <mat-list >
+            <mat-list-item *ngFor="let movie of userFavoriteMovies;">
                 <div>
                     <mat-icon class="star">stars</mat-icon> 
                     <span> <a [routerLink]="['/movies/', movie._id]">{{movie.name}}</a></span>

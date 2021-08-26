@@ -21,7 +21,7 @@ export class AppComponent {
         /**  If user is not logged in and is on a page other than the welcome page,
             send user to welcome page
         */ 
-        if (!localStorage.getItem('userId') && this.router.url !== '') {
+        if (!localStorage.getItem('userId') && this.router.url !== '/welcome') {
             this.router.navigate(['welcome']);
         }
         /**  If user is logged in and is on welcome page,
@@ -30,15 +30,18 @@ export class AppComponent {
         if (localStorage.getItem('userId') && this.route === '/welcome') {
             this.router.navigate(['movies']);
         }
-        /**  If user is logged in but their credentials are invalid,
+        /*  If user is logged on an authorized page (any page but welcome page) 
+            in but their credentials are invalid,
             log them out
         */
-        this.fetchApiData.getUser(localStorage.getItem('userId') || null).subscribe((user) => {
-        }, (error) => {
-           if (error === 401) {
-                this.router.navigate(['/logout']);
-           } 
-        });   
+        if (this.route !== '/welcome' ) {
+            this.fetchApiData.getUser(localStorage.getItem('userId')).subscribe((user) => {
+            }, (error) => {
+                if (error === 401) {
+                    this.router.navigate(['/logout']);
+                } 
+            }); 
+        }  
     }
     
 }

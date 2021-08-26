@@ -1,8 +1,19 @@
-$navbar-bg-color: rgb(75, 0, 128);
+@import '../../_partials/variables';
+$navbar-bg-color: $primary-color;
+:host {
+    display: block;
+    height: 15vh;
+}
 * {
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 nav {
+    align-items: center;
+    height: 100%;
+    background-color: $navbar-bg-color;
+    color: #fff;
+    display: flex;
+    width: 100%;
     li {
         & a:hover {
             text-decoration: underline;
@@ -19,11 +30,6 @@ nav {
             }
         }
     }
-    background-color: $navbar-bg-color;
-    color: #fff;
-    display: grid;
-    display: flex;
-    width: 100%;
     ul {
         &.logo-nav-list {
             justify-content: center;
@@ -71,9 +77,16 @@ nav {
     }
 }
 @media screen and (max-width: 500px) {
+    :host {
+        display: block;
+        height: 28vh;
+    }
     nav {
-        justify-content: flex-start;
+        justify-content: center;
         flex-direction: column;
+        &.loggedOut {
+            height: 10vh;
+        }
         ul {
             justify-content: flex-start;
             flex-direction: column;
@@ -81,8 +94,8 @@ nav {
             margin-left: 0;
             margin-right: 0;
             margin-top: 8px;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            padding-left: 8px;
+            padding-right: 8px;
             text-align: left;
             width: 100%;
             &.user-nav-list {
@@ -93,7 +106,6 @@ nav {
                 margin-right: 0;
                 margin-top: 0;
                 margin-bottom: 0;
-                padding: 1rem;
             }
         }
     }

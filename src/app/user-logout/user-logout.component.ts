@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FetchApiDataService } from '../fetch-api-data.service';
 
 @Component({
   selector: 'app-user-logout',
@@ -8,19 +9,20 @@ import { Router } from '@angular/router';
 })
 export class UserLogoutComponent implements OnInit {
 
-  constructor(
-      public router: Router
-  ) { }
+    constructor (
+        public router: Router,
+        public fetchApiData: FetchApiDataService
+    ) { }
 
-  ngOnInit(): void {
-      this.logoutUser();
-  }
+    ngOnInit(): void {
+        this.logoutUser();
+    }
 
-  logoutUser(): void {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
-    localStorage.removeItem('token');
-    this.router.navigate(['']);
-  }
+    logoutUser(): void {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token');
+        this.fetchApiData.logoutUser();
+        this.router.navigate(['']);
+    }
 
 }

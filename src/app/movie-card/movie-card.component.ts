@@ -34,15 +34,10 @@ export class MovieCardComponent {
     ) { }
 
     ngOnInit(): void {
-        this.getMovies();
-        this.getUserFavoriteMovies();
         this.getPathParams();
-    }
-
-    ngOnChanges() {
         this.getMovies();
         this.getUserFavoriteMovies();
-        this.getPathParams();        
+        
     }
 
     favoriteMovie(movie: any): void {

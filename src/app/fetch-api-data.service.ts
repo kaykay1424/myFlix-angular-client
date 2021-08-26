@@ -5,7 +5,6 @@ import { Observable, of, from, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const apiUrl = 'https://my-flix-2021.herokuapp.com/';
-const token = localStorage.getItem('token');
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +16,8 @@ export class FetchApiDataService {
 
     movies: any[] = [];
     user: any = null;
+    token: any = localStorage.getItem("token") 
+        ? localStorage.getItem("token"): null;
 
     // Make the api call to get all movies
     getAllMovies(): Observable<any> {
@@ -27,10 +28,10 @@ export class FetchApiDataService {
             });
             return getMovies(movies);
         }
-        console.log(token)
+     
         return this.http.get(apiUrl + 'movies', {headers: new HttpHeaders(
             {
-                Authorization: 'Bearer ' + token,
+                Authorization: 'Bearer ' + this.token,
             })}).pipe(
                 map((result: any) => {
                     // Only add movie if movie hasn't already been added to movies array
@@ -52,7 +53,7 @@ export class FetchApiDataService {
     getMovie(name: string): Observable<any> {
         return this.http.get(apiUrl + name, {headers: new HttpHeaders(
             {
-                Authorization: 'Bearer ' + token,
+                Authorization: 'Bearer ' + this.token,
             })}).pipe(
             catchError(this.handleError)
         );
@@ -62,7 +63,7 @@ export class FetchApiDataService {
     getDirector(name: string): Observable<any> {
         return this.http.get(apiUrl + 'directors/' + name, {headers: new HttpHeaders(
           {
-            Authorization: 'Bearer ' + token,
+            Authorization: 'Bearer ' + this.token,
           })}).pipe(
           catchError(this.handleError)
         );
@@ -72,7 +73,7 @@ export class FetchApiDataService {
     getGenre(genre: string): Observable<any> {
         return this.http.get(apiUrl + 'genres/' + genre, {headers: new HttpHeaders(
           {
-            Authorization: 'Bearer ' + token,
+            Authorization: 'Bearer ' + this.token,
           })}).pipe(
           catchError(this.handleError)
         );
@@ -84,7 +85,7 @@ export class FetchApiDataService {
             responseType: 'text',
             headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + this.token,
             })}).pipe(
         catchError(this.handleError)
         );
@@ -92,13 +93,12 @@ export class FetchApiDataService {
 
      // Make the api call to delete movie from user's favorite movies list
     deleteUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
-        
         return this.http.delete(apiUrl + 'users/' + id +'/favorite-movies/' + movie_id, {
             body: {id, movie_id}, 
             responseType: 'text',
             headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + this.token,
             })}).pipe(
                 map((result) => {
                     // Remove movie from user's favorites list if it exists in user's list
@@ -117,14 +117,14 @@ export class FetchApiDataService {
     editUser(user: any, id: any): Observable<any> {
         return this.http.patch(apiUrl + 'users/' + id, user, {headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + this.token,
             })}).pipe(
         catchError(this.handleError)
         );
     }
 
     // Make the api call to get user's info
-    getUser(id?: any): Observable<any> {
+    getUser(id: any): Observable<any> {
         if (this.user) {
             const user = of(this.user);
             const getUser = map((user: object) => {
@@ -135,14 +135,14 @@ export class FetchApiDataService {
 
         return this.http.get(apiUrl + 'users/' + id, {headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + this.token,
             })}).pipe(
                 map((result) => {
                     this.user = result;
                     return result || {}
                 }),
-        catchError(this.handleError)
-        );
+            catchError(this.handleError)
+            );
     }
 
     // Make the api call to add a movie to user's favorite movies list
@@ -151,7 +151,7 @@ export class FetchApiDataService {
             responseType: 'text',
             headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token
+              Authorization: 'Bearer ' + this.token
             })}).pipe(
                 map((result) => {
                     // Add movie to user's favorites list if movie exists in their list
@@ -167,7 +167,7 @@ export class FetchApiDataService {
     getUserFavoriteMovies(userId: any): Observable<any> {
         return this.http.get(apiUrl + 'users/'+ userId + '/favorite-movies', {headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + this.token,
             })}).pipe(
         catchError(this.handleError)
         );
@@ -184,14 +184,20 @@ export class FetchApiDataService {
     loginUser(userInfo: object): Observable<any> {
         return this.http.post(apiUrl + 'login', userInfo, {headers: new HttpHeaders(
             {
-              Authorization: 'Bearer ' + token,
+              Authorization: 'Bearer ' + this.token,
             })}).pipe(
                 map((result: any) => { 
                     this.user = result.user;
+                    this.token = result.token;
                     return result || {}
                 }),
                 catchError(this.handleError)
         );
+    }
+
+    logoutUser() {
+        this.user = null;
+        this.token = null;
     }
 
     private handleError(error: HttpErrorResponse): any {
