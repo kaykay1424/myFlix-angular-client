@@ -38,7 +38,10 @@ export class UserProfileComponent implements OnInit {
         this.fetchApiData.getUser(id).subscribe(({username, email, birthDate}) => {
             this.userData["username"] = username;
             this.userData["email"] = email;
-            this.userData["birthDate"] = formatDate(new Date(birthDate), 'yyyy-LL-dd', 'en-US' );
+            // Convert birthDate (if exists) to year-month-day format (2021-08-01)
+            this.userData["birthDate"] =
+                this.userData["birthDate"] !== '' ? formatDate(new Date(birthDate), 'yyyy-LL-dd', 'en-US' )
+                : birthDate;
         })
     }
 

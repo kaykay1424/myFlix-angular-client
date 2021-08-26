@@ -34,10 +34,10 @@ export class MovieCardComponent {
     ) { }
 
     ngOnInit(): void {
+        this.dialog.closeAll();
         this.getPathParams();
         this.getMovies();
-        this.getUserFavoriteMovies();
-        
+        this.getUserFavoriteMovies();  
     }
 
     favoriteMovie(movie: any): void {
@@ -45,6 +45,7 @@ export class MovieCardComponent {
             alert('You have already added this movie to your list. Try adding another one.')
             return;
         }
+
         this.fetchApiData.addUserFavoriteMovie(userId, movie._id).subscribe((result) => {
             this.userFavoriteMovies.push(movie._id);
             this.openFavoriteMoviesDialog(movie._id);
@@ -71,7 +72,7 @@ export class MovieCardComponent {
     }
 
     getUserFavoriteMovies(): void {
-        this.fetchApiData.getUser(userId).subscribe((user) => {
+        this.fetchApiData.getUser().subscribe((user) => {
             this.userFavoriteMovies = user.favoriteMovies.map((id: any) => {
                 return id;
             });

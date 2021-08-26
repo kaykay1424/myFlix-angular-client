@@ -16,6 +16,9 @@ export class FetchApiDataService {
 
     movies: any[] = [];
     user: any = null;
+    userId: any = localStorage.getItem('userId') 
+        ? localStorage.getItem('userId')
+        : null;
     token: any = localStorage.getItem("token") 
         ? localStorage.getItem("token"): null;
 
@@ -92,9 +95,9 @@ export class FetchApiDataService {
     }
 
      // Make the api call to delete movie from user's favorite movies list
-    deleteUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
-        return this.http.delete(apiUrl + 'users/' + id +'/favorite-movies/' + movie_id, {
-            body: {id, movie_id}, 
+    deleteUserFavoriteMovie(id?: any, movie_id?: any): Observable<any> {
+        return this.http.delete(apiUrl + 'users/' + this.userId +'/favorite-movies/' + movie_id, {
+            body: {_id: this.userId, movie_id}, 
             responseType: 'text',
             headers: new HttpHeaders(
             {
@@ -115,7 +118,7 @@ export class FetchApiDataService {
 
     // Make the api call to edit user's info
     editUser(user: any, id: any): Observable<any> {
-        return this.http.patch(apiUrl + 'users/' + id, user, {headers: new HttpHeaders(
+        return this.http.patch(apiUrl + 'users/' + this.userId, user, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + this.token,
             })}).pipe(
@@ -124,7 +127,7 @@ export class FetchApiDataService {
     }
 
     // Make the api call to get user's info
-    getUser(id: any): Observable<any> {
+    getUser(id?: any): Observable<any> {
         if (this.user) {
             const user = of(this.user);
             const getUser = map((user: object) => {
@@ -133,7 +136,7 @@ export class FetchApiDataService {
             return getUser(user);
         } 
 
-        return this.http.get(apiUrl + 'users/' + id, {headers: new HttpHeaders(
+        return this.http.get(apiUrl + 'users/' + this.userId, {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + this.token,
             })}).pipe(
@@ -146,8 +149,8 @@ export class FetchApiDataService {
     }
 
     // Make the api call to add a movie to user's favorite movies list
-    addUserFavoriteMovie(id: any, movie_id: any): Observable<any> {
-        return this.http.patch(apiUrl + 'users/'+ id + '/favorite-movies/' + movie_id, {id, movie_id}, {
+    addUserFavoriteMovie(id?: any, movie_id?: any): Observable<any> {
+        return this.http.patch(apiUrl + 'users/'+ this.userId + '/favorite-movies/' + movie_id, {_id: this.userId, movie_id}, {
             responseType: 'text',
             headers: new HttpHeaders(
             {
@@ -165,7 +168,7 @@ export class FetchApiDataService {
 
     // Make the api call to get list of user's favorite movies
     getUserFavoriteMovies(userId: any): Observable<any> {
-        return this.http.get(apiUrl + 'users/'+ userId + '/favorite-movies', {headers: new HttpHeaders(
+        return this.http.get(apiUrl + 'users/'+ this.userId + '/favorite-movies', {headers: new HttpHeaders(
             {
               Authorization: 'Bearer ' + this.token,
             })}).pipe(
@@ -182,12 +185,10 @@ export class FetchApiDataService {
 
     // Make the api call to login user
     loginUser(userInfo: object): Observable<any> {
-        return this.http.post(apiUrl + 'login', userInfo, {headers: new HttpHeaders(
-            {
-              Authorization: 'Bearer ' + this.token,
-            })}).pipe(
+        return this.http.post(apiUrl + 'login', userInfo).pipe(
                 map((result: any) => { 
                     this.user = result.user;
+                    this.userId = result.user._id;
                     this.token = result.token;
                     return result || {}
                 }),
@@ -197,6 +198,7 @@ export class FetchApiDataService {
 
     logoutUser() {
         this.user = null;
+        this.userId = null;
         this.token = null;
     }
 
