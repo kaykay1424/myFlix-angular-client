@@ -107,9 +107,22 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {}
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*component.ts",
+              "src/**/*service.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "myFlix-Angular-client"
+  "defaultProject": "myFlix-Angular-client",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

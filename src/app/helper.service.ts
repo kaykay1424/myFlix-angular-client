@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import {parse} from 'angular-html-parser';
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class HelperService {
 
     constructor() { }
 
-    // Break long text into readable paragraphs
+    /**
+     * Breaks long text into readable paragraphs
+     * @param text 
+     * @returns text (not html)
+     */
     makeTextReadable(text: string) {
         const textArray = text.split('');
         textArray.unshift('<p>');
@@ -24,18 +28,23 @@ export class HelperService {
                     textArray.splice(i+1, 0, '</p><p>');
                 }
             }
-        
         }
    
-        return textArray.join(''); // render as html
+        return textArray.join(''); 
     };
 
+    /**
+     * Checks for errors with username and/or passwords
+     * @param username 
+     * @param passwords object (optional)
+     * @returns true or false
+     */
     validateForm(username: string, passwords?: any) {
-        let errors: any = {};
-        
-        
+        const errors: any = {};
+
         if (passwords) {
-            if (!this.validatePasswords(passwords.password1, passwords.password2)) {
+            if (!this.validatePasswords(
+                passwords.password1, passwords.password2)) {
                 errors['passwordErrors'] = true;
             }
         }
@@ -46,15 +55,27 @@ export class HelperService {
         return Object.keys(errors).length > 0 ? errors: null;
     }
 
+    /**
+     * Check that both passwords match
+     * @param password1
+     * @param password2 
+     * @returns errors (object) or null
+     */
     validatePasswords(password1: string, password2: string) {
         // If both passwords don't match
         return (password1 !== '' && (password1 !== password2))
-        ? false
-        : true;
+            ? false
+            : true;
     }
 
+    /**
+     * Check that username is at least 6 characters
+     * and only contains alphanumeric characters
+     * @param username 
+     * @returns errors (object) or null
+     */
     validateUsername(username: string) {
-        let errors: any = {};
+        const errors: any = {};
         
         // Check that username is at least 6 characters
         // and only contains alphanumeric characters
@@ -70,7 +91,6 @@ export class HelperService {
                 break;
             }
         } 
-        
 
         return Object.keys(errors).length > 0 ? errors: null;
     }

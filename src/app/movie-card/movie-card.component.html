@@ -46,7 +46,7 @@
                 Details
             </button>
             <mat-icon
-                (click)="favoriteMovie(movie)"
+                (click)="addUserFavoriteMovie(movie)"
                 [ngClass]="{'favorited': userFavoriteMovies.includes(movie._id)}"
             >stars</mat-icon>
         </mat-card-actions>

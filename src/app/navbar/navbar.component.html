@@ -6,8 +6,8 @@
         <li class="logo">myFlix</li>
     </ul>
     <ul *ngIf="username" class="user-nav-list">
-        <li>{{username}} <span (click)="toggleDropdownMenu(open)">{{!open ? '&#9660;' : '&#9650;'}}</span>
-            <ul *ngIf="open">
+        <li>{{username}} <span (click)="toggleDropdownMenu()">{{!dropDownMenuOpen  ? '&#9660;' : '&#9650;'}}</span>
+            <ul *ngIf="dropDownMenuOpen">
                 <li [ngClass]="{'active': currentRoute  === '/profile'}"><a routerLink="/profile">Profile</a></li>
                 <li><a routerLink="/logout">Logout</a></li>
             </ul>

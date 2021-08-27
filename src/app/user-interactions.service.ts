@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class UserInteractionsService {
     constructor() { }
@@ -10,7 +9,6 @@ export class UserInteractionsService {
     selectedGenre: any = null;
     selectedDirector: any = null;
     selectedMovie: any = null;
-    userMenuDropdownOpen: any = false;
     
     getSelectedGenre() {
         return this.selectedGenre;
@@ -24,10 +22,6 @@ export class UserInteractionsService {
         return this.selectedMovie;
     }
 
-    getUserDropdownMenuOpen() {
-        return this.userMenuDropdownOpen;
-    }
-
     setSelectedGenre(genre: object): void {
         this.selectedGenre = genre;
     } 
@@ -38,9 +32,5 @@ export class UserInteractionsService {
 
     setSelectedMovie(movie: object): void {
         this.selectedMovie = movie;
-    }
-
-    setUserDropdownMenuOpen(open: boolean) {
-        this.userMenuDropdownOpen = open;
     }
 }

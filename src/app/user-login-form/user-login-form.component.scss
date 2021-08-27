@@ -1,0 +1,12 @@
+::ng-deep {
+    .mat-card  {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        width: 250px;
+    }
+    .mat-form-field {
+        width: 100%;
+    }
+}

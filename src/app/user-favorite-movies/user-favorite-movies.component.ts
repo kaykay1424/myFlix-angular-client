@@ -1,47 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { FetchApiDataService } from '../fetch-api-data.service';
 
-const userId = localStorage.getItem('userId');
-
 @Component({
-  selector: 'app-user-favorite-movies',
-  templateUrl: './user-favorite-movies.component.html',
-  styleUrls: ['./user-favorite-movies.component.scss']
+    selector: 'app-user-favorite-movies',
+    templateUrl: './user-favorite-movies.component.html',
+    styleUrls: ['./user-favorite-movies.component.scss']
 })
 
 export class UserFavoriteMoviesComponent implements OnInit {
 
-  constructor(public fetchApiData: FetchApiDataService ) { }
+    constructor(public fetchApiData: FetchApiDataService) { }
 
-  user: any = {};
-  userFavoriteMovies: any[] = [];
+    user: any = {};
+    userFavoriteMovies: any[] = [];
 
-  ngOnInit(): void {
-    this.getUser();
-  }
+    ngOnInit(): void {
+        this.getUserFavoriteMoviesIds();
+    }
 
-  deleteUserFavoriteMovie(movieId: any) {
-    this.fetchApiData.deleteUserFavoriteMovie(userId, movieId).subscribe(() => {
-        const filteredMovies = this.userFavoriteMovies.filter((movie) => {
-            return movie._id !== movieId;
+    /**
+     * Deletes movie with movieId from user's favorites list
+     * @param movieId
+     */
+    deleteUserFavoriteMovie(movieId: string) {
+        this.fetchApiData.deleteUserFavoriteMovie(movieId).subscribe(() => {
+            const filteredMovies = this.userFavoriteMovies.filter((movie) => {
+                return movie._id !== movieId;
+            });
+            this.userFavoriteMovies = filteredMovies;
         });
-        this.userFavoriteMovies = filteredMovies;
-    });
-  }
+    }
 
-  getUser() {
-    this.fetchApiData.getUser(userId).subscribe((result: any) => {
-        this.user = result;
-        this.getUserFavoriteMovies();
-    });
-  }
+    /**
+     * Get list of user's favorite movies (list only contains ids of movies)
+     */
+    getUserFavoriteMoviesIds() {
+        this.fetchApiData.getUser().subscribe((result: any) => {
+            this.getUserFavoriteMovies(result.favoriteMovies);
+        });
+    }
 
-  getUserFavoriteMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((movies) => {
-        this.userFavoriteMovies = movies.filter((movie: any) => {
-            return this.user.favoriteMovies.includes(movie._id);
-        })
-    })
-  }
-
+    /**
+     * Convert list of user's favorite movies' ids (array of strings)
+     * to list that contains all movie's info 
+     * for each movie id (array of objects)
+     * and sets this.userFavoriteMovies to that list
+     * @param favoriteMovies 
+     */
+    getUserFavoriteMovies(favoriteMovies: string[]): void {
+        this.fetchApiData.getAllMovies().subscribe((movies) => {
+            this.userFavoriteMovies = movies.filter((movie: any) => {
+                return favoriteMovies.includes(movie._id);
+            });
+        });
+    }
 }
