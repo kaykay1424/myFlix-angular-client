@@ -1,4 +1,4 @@
-# MyFlix (Angular)
+# [MyFlix (Angular)](https://kaykay1424.github.io/myFlix-angular-client/)
 This is the client-side for the [myFlix](https://github.com/kaykay1424/myFlix-client) app built in Angular instead of React.
 
 ## How to Get Started
